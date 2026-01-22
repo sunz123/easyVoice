@@ -2,6 +2,7 @@ import fs from 'fs/promises'
 import { EdgeSchema } from '../schema/generate'
 import { EdgeTTS } from '../lib/node-edge-tts/edge-tts-fixed'
 import { fileExist, readJson, safeRunWithRetry } from '../utils'
+import { ttsPluginManager } from '../tts/pluginManager'
 
 export async function runEdgeTTS({
   text,
@@ -12,6 +13,59 @@ export async function runEdgeTTS({
   output,
   outputType = 'file',
 }: Omit<EdgeSchema, 'useLLM'> & { output: string; outputType?: string }) {
+  // Check for CosyVoice engine
+  const cosyEngine = ttsPluginManager.getEngine('cosyvoice')
+  const isCosyVoice = voice.startsWith('zh-CN-long') || voice.startsWith('long')
+
+  if (isCosyVoice) {
+    if (!cosyEngine) {
+      throw new Error(
+        'CosyVoice 引擎未注册。请在 packages/backend/.env 文件中配置 REGISTER_COSYVOICE=true 和 COSYVOICE_API_KEY。'
+      )
+    }
+    const voices = await cosyEngine.getVoiceOptions!()
+    if (voices.includes(voice)) {
+      console.log(`run with cosyvoice service...`)
+      let speed = 1.0
+      if (rate) {
+        const val = parseFloat(rate)
+        if (!isNaN(val)) speed = rate.endsWith('%') ? 1.0 + val / 100 : val
+      }
+      let vol = 1.0
+      if (volume) {
+        const val = parseFloat(volume)
+        if (!isNaN(val)) vol = volume.endsWith('%') ? 1.0 + val / 100 : val
+      }
+
+      const result = await cosyEngine.synthesize(text, {
+        voice,
+        speed,
+        volume: vol,
+        outputType,
+        output,
+      })
+
+      if (outputType === 'file' && output) {
+        // Create dummy subtitle JSON to satisfy pipeline
+        const subJson = [
+          {
+            part: text,
+            start: 0,
+            end: 1000, // Dummy 1 second
+          },
+        ]
+        await fs.writeFile(output.replace('.mp3', '.json'), JSON.stringify(subJson, null, 2))
+
+        return {
+          audio: output,
+          srt: output.replace('.mp3', '.srt'),
+          file: '',
+        }
+      }
+      return result
+    }
+  }
+
   const lang = /([a-zA-Z]{2,5}-[a-zA-Z]{2,5}\b)/.exec(voice)?.[1]
   const tts = new EdgeTTS({
     voice,

@@ -150,7 +150,7 @@ class EdgeTTS {
     }
   }
   async _saveSubFile(subFile: SubLine[], text: string, audioPath: string, outputType?: string) {
-    let subPath = audioPath + '.json'
+    let subPath = audioPath.replace('.mp3', '.json')
     if (outputType === 'stream') {
       const tmpDir = audioPath + '_tmp'
       await ensureDir(tmpDir)

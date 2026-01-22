@@ -233,7 +233,7 @@ interface SegmentError extends Error {
 }
 export async function handleSrt(audioPath: string, stream = true) {
   if (!stream) {
-    const tempJsonPath = audioPath + '.json'
+    const tempJsonPath = audioPath.replace('.mp3', '.json')
     await generateSrt(tempJsonPath, audioPath.replace('.mp3', '.srt'))
     return
   }
@@ -291,13 +291,13 @@ async function buildSegmentList(segments: BuildSegment[], task: Task): Promise<v
     }
 
     const segment = segments[index]
-    const generateWithRetry = async (attempt = 0): Promise<Readable> => {
+    const generateWithRetry = async (attempt = 0): Promise<Readable | Buffer> => {
       try {
         return (await generateSingleVoiceStream({
           ...segment,
           outputType: 'stream',
           output,
-        })) as Readable
+        })) as Readable | Buffer
       } catch (err) {
         const error = err as Error
         if (attempt + 1 >= maxRetries) {
@@ -313,7 +313,11 @@ async function buildSegmentList(segments: BuildSegment[], task: Task): Promise<v
 
     try {
       // TODO: Concurrency of streaming flow
-      const audioStream = await generateWithRetry()
+      const audioStreamResult = await generateWithRetry()
+      const audioStream = Buffer.isBuffer(audioStreamResult)
+        ? Readable.from(audioStreamResult)
+        : audioStreamResult
+
       await audioStream.pipe(outputStream, { end: false })
       await new Promise((resolve) => audioStream.on('end', resolve))
       completedSegments++

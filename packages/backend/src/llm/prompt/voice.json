@@ -364,5 +364,71 @@
     "Gender": "Male",
     "ContentCategories": ["General"],
     "VoicePersonalities": ["Friendly", "Positive"]
+  },
+  {
+    "Name": "zh-CN-longwan",
+    "Gender": "Female",
+    "ContentCategories": ["CosyVoice"],
+    "VoicePersonalities": ["Friendly"]
+  },
+  {
+    "Name": "zh-CN-longcheng",
+    "Gender": "Male",
+    "ContentCategories": ["CosyVoice"],
+    "VoicePersonalities": ["Professional"]
+  },
+  {
+    "Name": "zh-CN-longhua",
+    "Gender": "Female",
+    "ContentCategories": ["CosyVoice"],
+    "VoicePersonalities": ["Gentle"]
+  },
+  {
+    "Name": "zh-CN-longxia",
+    "Gender": "Female",
+    "ContentCategories": ["CosyVoice"],
+    "VoicePersonalities": ["Cute"]
+  },
+  {
+    "Name": "zh-CN-longye",
+    "Gender": "Male",
+    "ContentCategories": ["CosyVoice"],
+    "VoicePersonalities": ["Story"]
+  },
+  {
+    "Name": "zh-CN-longjue",
+    "Gender": "Male",
+    "ContentCategories": ["CosyVoice"],
+    "VoicePersonalities": ["Story"]
+  },
+  {
+    "Name": "zh-CN-longshuo",
+    "Gender": "Male",
+    "ContentCategories": ["CosyVoice"],
+    "VoicePersonalities": ["Professional"]
+  },
+  {
+    "Name": "zh-CN-longmiao",
+    "Gender": "Female",
+    "ContentCategories": ["CosyVoice"],
+    "VoicePersonalities": ["Cute"]
+  },
+  {
+    "Name": "zh-CN-longyue",
+    "Gender": "Female",
+    "ContentCategories": ["CosyVoice"],
+    "VoicePersonalities": ["Gentle"]
+  },
+  {
+    "Name": "zh-CN-longanyang",
+    "Gender": "Male",
+    "ContentCategories": ["CosyVoice"],
+    "VoicePersonalities": ["Sunshine"]
+  },
+  {
+    "Name": "zh-CN-longanhuan",
+    "Gender": "Female",
+    "ContentCategories": ["CosyVoice"],
+    "VoicePersonalities": ["Lively"]
   }
 ]

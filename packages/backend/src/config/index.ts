@@ -34,6 +34,9 @@ export const REGISTER_OPENAI_TTS = process.env.REGISTER_OPENAI_TTS || false
 export const REGISTER_KOKORO = process.env.REGISTER_KOKORO || false
 export const TTS_KOKORO_URL = process.env.TTS_KOKORO_URL || 'http://localhost:8880/v1'
 
+export const REGISTER_COSYVOICE = process.env.REGISTER_COSYVOICE || false
+export const COSYVOICE_API_KEY = process.env.COSYVOICE_API_KEY
+
 export const LIMIT_TEXT_LENGTH = parseInt(process.env.LIMIT_TEXT_LENGTH || '0')
 export const LIMIT_TEXT_LENGTH_ERROR_MESSAGE = process.env.LIMIT_TEXT_LENGTH_ERROR_MESSAGE
 export const USE_HELMET = process.env.USE_HELMET === 'true' || false

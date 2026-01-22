@@ -15,6 +15,17 @@ const zhVoiceMap = {
   'zh-TW-HsiaoChenNeural': 'zh-TW-曉臻', // 台湾普通话女声，清晨般清新
   'zh-TW-HsiaoYuNeural': 'zh-TW-曉雨', // 台湾普通话女声，柔和优雅
   'zh-TW-YunJheNeural': 'zh-TW-雲哲', // 台湾普通话男声，睿智沉稳
+  'zh-CN-longwan': 'zh-CN-龙婉 (CosyVoice)',
+  'zh-CN-longcheng': 'zh-CN-龙诚 (CosyVoice)',
+  'zh-CN-longhua': 'zh-CN-龙华 (CosyVoice)',
+  'zh-CN-longxia': 'zh-CN-龙夏 (CosyVoice)',
+  'zh-CN-longye': 'zh-CN-龙叶 (CosyVoice)',
+  'zh-CN-longjue': 'zh-CN-龙爵 (CosyVoice)',
+  'zh-CN-longshuo': 'zh-CN-龙硕 (CosyVoice)',
+  'zh-CN-longmiao': 'zh-CN-龙妙 (CosyVoice)',
+  'zh-CN-longyue': 'zh-CN-龙悦 (CosyVoice)',
+  'zh-CN-longanyang': 'zh-CN-龙安洋 (CosyVoice)',
+  'zh-CN-longanhuan': 'zh-CN-龙安欢 (CosyVoice)',
 } as const
 
 type VoiceKey = keyof typeof zhVoiceMap
@@ -173,8 +184,8 @@ export function createAudioStreamProcessor(
           break
         }
         if (value) {
-          await appendBuffer(value.buffer)
-          const blob = new Blob([value.buffer], { type: mimeType })
+          await appendBuffer(value.buffer.slice(0) as ArrayBuffer)
+          const blob = new Blob([value.buffer as ArrayBuffer], { type: mimeType })
           const blobDuration = (blob.size * 8) / bitrate
           blobs.push({ blob, duration: blobDuration })
           onProgress()
